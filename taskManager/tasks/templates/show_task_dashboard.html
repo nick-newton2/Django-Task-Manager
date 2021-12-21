@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<head>  
+    <meta charset="UTF-8">  
+    <title>Task Dashboard</title> 
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+
+	<style>
+
+		html *{
+			font-family: Verdana !important;
+		}	
+
+		header {
+			background: #343a40;
+		}
+
+		header::after {
+			content: '';
+			display: table;
+			clear: both;
+		}
+
+		.logo {
+			float: left;
+			padding-top: 15px;
+			margin-left: 10px;
+			padding-bottom: 10px;
+			border: none;
+		}
+
+		nav {
+			float: right;
+		}
+
+		nav ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		nav li {
+		  color: #ffffff;
+		  display: inline-block;
+		  margin-left: 20px;
+		  margin-right: 20px;
+		  padding-top: 20px;
+		  position: relative;
+		}
+
+		nav a {
+		  color: #ffffff;
+		}
+
+		nav a:hover {
+			color: #00ff00;
+		}
+
+		nav a::before {
+			content: '';
+			display: block;
+			height: 5px;
+			background-color: #444;
+
+			position: absolute;
+			top: 0;
+			width: 0%;
+
+			transition: all ease-in-out 250ms;
+		}
+
+		nav a:hover::before {
+			width: 100%;
+		}
+
+		h3 {
+			color: #f8f9fa;
+		}
+
+	</style>
+</head>  
+<body>
+	{% load managertags %}
+	<header>
+		<div class="container_h">
+			<h3 class="logo"><b>Task Dashboard</b></h3>
+
+			<nav>
+				<ul>
+					<li><a href="/show_tasks">Tasks List</a></li>
+					<li><a href="/show_timestamps">Timestamps</a></li>
+					<li><a href="/show_task_dashboard">Task Dashboard</a></li>
+
+					<li><a href="/show_time_dashboard">Time Dashboard</a></li>
+				</ul>
+			</nav>
+
+
+		</div>
+	</header>
+	<br>
+	
+	<form method="POST" action="/show_task_dashboard">
+
+		{% csrf_token %}
+		<label for="date_filter">Filter by Week and Month:</label>
+			{{ date_form.day }}
+		<button type="submit">Filter</button>
+	</form>
+	<h4 class="logo"><b>Displaying Results for Week of {{ week_start }}, Month of {{ month }}</b></h4>
+	<br>
+	<table class="table">  
+    	<thead class="thead-dark">  
+    	<tr>  
+
+
+        	<th>Task Name</th>   
+			<th>Project</th>
+			<th>Avg Total Timestamp Duration</th>
+			<th>% of Total Work Time</th>
+        	<th>Avg Weekly Timestamp Duration</th>  
+			<th>% of Weekly Work Time</th>
+        	<th>Avg Monthly Timestamp Duration</th> 
+			<th>% of Monthly Work Time</th>
+
+    	</tr>  
+    	</thead>  
+    	<tbody>  
+		{% for task in tasks %}  
+    		<tr>  
+        		<td>{{ task.task_name }}</td>  
+
+	        	<td>{{ task.project }}</td> 
+				<!-- Custom funtion for multi level dictionary accesses, see /tasks/templatetags/managertags.py for definition -->
+				<td>{% dict_get ts_total_avg task.id %} Minutes</td>
+				<td>{% dict_get ts_total_pct task.id %}%</td>
+        		<td>{% dict_get ts_week_avg task.id %} Minutes</td> 
+				<td>{% dict_get ts_week_pct task.id %}%</td>				
+        		<td>{% dict_get ts_month_avg task.id %} Minutes</td> 
+				<td>{% dict_get ts_month_pct task.id %}%</td>
+
+    		</tr>
+		{% endfor %}  
+   	 </tbody>  
+	</table>  
+	<br>  
+
+	<br>    
+</body>  
+</html>  
+

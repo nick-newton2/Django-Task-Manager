@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<head>  
+    <meta charset="UTF-8">  
+    <title>Add Task</title> 
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+
+	<style>
+
+		html *{
+    		font-family: Verdana !important;
+		}	
+
+		header {
+          background: #343a40;
+        }
+
+        header::after {
+          content: '';
+          display: table;
+          clear: both;
+        }
+
+        .logo {
+          float: left;
+          padding-top: 15px;
+		  margin-left: 10px;
+		  padding-bottom: 10px;
+          border: none;
+        }
+
+        nav {
+          float: right;
+        }
+
+        nav ul {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        nav li {
+		  color: #ffffff;
+          display: inline-block;
+          margin-left: 20px;
+		  margin-right: 20px;
+		  padding-top: 20px;
+          position: relative;
+        }
+
+        nav a {
+          color: #ffffff;
+        }
+
+        nav a:hover {
+          color: #00ff00;
+        }
+
+        nav a::before {
+          content: '';
+          display: block;
+          height: 5px;
+          background-color: #444;
+
+          position: absolute;
+          top: 0;
+          width: 0%;
+
+          transition: all ease-in-out 250ms;
+        }
+
+        nav a:hover::before {
+          width: 100%;
+        }
+
+		h3 {
+			color: #f8f9fa;
+		}
+
+        form {
+    		display: inline;
+		}
+
+	</style>
+</head>  
+<body> 
+	<header>
+		<div class="container_h">
+			<h3 class="logo"><b>Add Task</b></h3>
+			<nav>
+				<ul>
+					<li><a href="/show_tasks">Tasks List</a></li>
+					<li><a href="/show_timestamps">Timestamps</a></li>
+					<li>Tasks Dashboard</li>
+					<li>Timer Dashboard</li>
+				</ul>
+			</nav>
+		</div>
+	</header> 
+<div style="padding-left: 10px;">
+<form method="POST" action="/new">  
+    {% csrf_token %}    
+<br>    
+    <h3 style="color: black;">Enter Details</h3>   
+    <label>Task Name:</label>  
+		{{ form.task_name }}  
+	<br>
+	  
+    <label>Task Description:</label>  
+	<br>
+		{{ form.task_description }}  
+	<br>
+	  
+    <label>Project:</label>  
+		{{ form.project }}  
+	<br>
+	  
+    <label>Status:</label>   
+		{{ form.status }}  
+	<br>
+	  
+    <button type="submit">Submit</button>   
+</form>  
+<form method="POST" action="/show_tasks">
+    {% csrf_token %}
+    <button type="submit">Cancel</button>
+</form>
+</div>
+</body>  
+</html>  
